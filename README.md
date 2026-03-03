@@ -2,6 +2,10 @@
 
 A clean, mobile-friendly expense tracking app built for students. Log daily spending, set a monthly budget, and visualize where your money goes — all stored locally in your browser.
 
+## Live Demo
+
+https://spendwise-byjc.vercel.app/
+
 ## Features
 
 - **Add & Delete Expenses** — quickly log expenses with an amount, category, date, and optional note
