@@ -1,4 +1,4 @@
-# SpendWise a Student Expense Tracker
+## SpendWise a Student Expense Tracker
 
 A clean, mobile-friendly expense tracking app built for students. Log daily spending, set a monthly budget, and visualize where your money goes — all stored locally in your browser.
 
