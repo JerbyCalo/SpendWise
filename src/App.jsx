@@ -9,7 +9,7 @@ import CategoryChart from "./components/CategoryChart";
 
 function App() {
   const {
-    budget,
+    currentBudget,
     addExpense,
     deleteExpense,
     setBudget,
@@ -31,8 +31,9 @@ function App() {
       <main className="max-w-5xl mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6 pb-20 sm:pb-6">
         <BudgetSummary
           totalSpent={totalSpent}
-          budget={budget}
+          currentBudget={currentBudget}
           remaining={remaining}
+          activeMonth={activeMonth}
           onSetBudget={setBudget}
         />
 

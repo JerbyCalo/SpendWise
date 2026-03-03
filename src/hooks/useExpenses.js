@@ -18,8 +18,8 @@ export const useExpenses = () => {
   const [expenses, setExpenses] = useState(() =>
     loadFromStorage(EXPENSES_KEY, []),
   );
-  const [budget, setBudgetState] = useState(() =>
-    loadFromStorage(BUDGET_KEY, { monthly: 5000 }),
+  const [budgets, setBudgetsState] = useState(() =>
+    loadFromStorage(BUDGET_KEY, {}),
   );
   const [activeMonth, setActiveMonth] = useState(getCurrentMonth);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -36,8 +36,8 @@ export const useExpenses = () => {
 
   // Persist budget to localStorage on every change
   useEffect(() => {
-    localStorage.setItem(BUDGET_KEY, JSON.stringify(budget));
-  }, [budget]);
+    localStorage.setItem(BUDGET_KEY, JSON.stringify(budgets));
+  }, [budgets]);
 
   // Add a new expense
   const addExpense = (expenseData) => {
@@ -57,10 +57,13 @@ export const useExpenses = () => {
     setExpenses((prev) => prev.filter((e) => e.id !== id));
   };
 
-  // Set monthly budget
+  // Set budget for the active month
   const setBudget = (amount) => {
-    setBudgetState({ monthly: Number(amount) });
+    setBudgetsState((prev) => ({ ...prev, [activeMonth]: Number(amount) }));
   };
+
+  // Derived: current month's budget (0 if not set)
+  const currentBudget = budgets[activeMonth] ?? 0;
 
   // Derived: expenses filtered by activeMonth
   const filteredExpenses = useMemo(
@@ -75,7 +78,7 @@ export const useExpenses = () => {
   );
 
   // Derived: remaining budget
-  const remaining = budget.monthly - totalSpent;
+  const remaining = currentBudget - totalSpent;
 
   // Derived: totals per category
   const spentByCategory = useMemo(
@@ -89,7 +92,7 @@ export const useExpenses = () => {
 
   return {
     expenses,
-    budget,
+    currentBudget,
     addExpense,
     deleteExpense,
     setBudget,

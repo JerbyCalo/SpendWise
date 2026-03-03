@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { format, parse } from "date-fns";
 import { PiggyBank } from "lucide-react";
 import {
   Dialog,
@@ -12,13 +13,23 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { formatPHP } from "../utils/formatCurrency";
 
-const BudgetSetterModal = ({ currentBudget, onSave, isOpen, onClose }) => {
-  const [amount, setAmount] = useState(String(currentBudget));
+const BudgetSetterModal = ({
+  currentBudget,
+  activeMonth,
+  onSave,
+  isOpen,
+  onClose,
+}) => {
+  const [amount, setAmount] = useState(String(currentBudget || ""));
+
+  const monthLabel = activeMonth
+    ? format(parse(activeMonth, "yyyy-MM", new Date()), "MMMM yyyy")
+    : "this month";
 
   // Sync input when modal opens or currentBudget changes
   useEffect(() => {
     if (isOpen) {
-      setAmount(String(currentBudget));
+      setAmount(currentBudget ? String(currentBudget) : "");
     }
   }, [isOpen, currentBudget]);
 
@@ -39,8 +50,15 @@ const BudgetSetterModal = ({ currentBudget, onSave, isOpen, onClose }) => {
             Set Monthly Budget
           </DialogTitle>
           <DialogDescription className="text-surface-muted">
-            Current budget:{" "}
-            <span className="mono">{formatPHP(currentBudget)}</span>
+            Setting budget for{" "}
+            <span className="text-white font-medium">{monthLabel}</span>
+            {currentBudget > 0 && (
+              <>
+                {" — "}
+                current:{" "}
+                <span className="mono">{formatPHP(currentBudget)}</span>
+              </>
+            )}
           </DialogDescription>
         </DialogHeader>
 

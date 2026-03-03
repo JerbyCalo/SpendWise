@@ -7,15 +7,22 @@ import { Button } from "@/components/ui/button";
 import { formatPHP } from "../utils/formatCurrency";
 import BudgetSetterModal from "./BudgetSetterModal";
 
-const BudgetSummary = ({ totalSpent, budget, remaining, onSetBudget }) => {
+const BudgetSummary = ({
+  totalSpent,
+  currentBudget,
+  remaining,
+  activeMonth,
+  onSetBudget,
+}) => {
   const [isBudgetModalOpen, setIsBudgetModalOpen] = useState(false);
 
-  const percentage =
-    budget.monthly > 0
-      ? Math.min(Math.round((totalSpent / budget.monthly) * 100), 100)
-      : 0;
+  const hasBudget = currentBudget > 0;
 
-  const isOver = remaining < 0;
+  const percentage = hasBudget
+    ? Math.min(Math.round((totalSpent / currentBudget) * 100), 100)
+    : 0;
+
+  const isOver = hasBudget && remaining < 0;
 
   return (
     <>
@@ -38,64 +45,83 @@ const BudgetSummary = ({ totalSpent, budget, remaining, onSetBudget }) => {
             )}
           </div>
 
-          {/* Progress bar */}
-          <div className="space-y-1.5">
-            <Progress
-              value={percentage}
-              className="h-2.5 bg-surface-border"
-              indicatorClassName={isOver ? "bg-red-500" : "bg-brand"}
-            />
-            <div className="flex justify-between text-xs text-surface-muted">
-              <span>{percentage}% used</span>
-              <span className="mono">{formatPHP(budget.monthly)}</span>
-            </div>
-          </div>
-
-          {/* Budget + Remaining row */}
-          <div className="grid grid-cols-2 gap-2 sm:gap-4">
-            <div className="rounded-lg bg-surface p-2.5 sm:p-3 border border-surface-border">
-              <p className="text-[10px] sm:text-xs text-surface-muted mb-1">
-                Monthly Budget
-              </p>
-              <p className="text-base sm:text-lg font-semibold text-white mono">
-                {formatPHP(budget.monthly)}
-              </p>
-            </div>
-            <div className="rounded-lg bg-surface p-2.5 sm:p-3 border border-surface-border">
-              <div className="flex items-center gap-1 mb-1">
-                <p className="text-[10px] sm:text-xs text-surface-muted">
-                  Remaining
-                </p>
-                {isOver ? (
-                  <TrendingDown className="h-3 w-3 text-red-400" />
-                ) : (
-                  <TrendingUp className="h-3 w-3 text-brand" />
-                )}
+          {hasBudget ? (
+            <>
+              {/* Progress bar */}
+              <div className="space-y-1.5">
+                <Progress
+                  value={percentage}
+                  className="h-2.5 bg-surface-border"
+                  indicatorClassName={isOver ? "bg-red-500" : "bg-brand"}
+                />
+                <div className="flex justify-between text-xs text-surface-muted">
+                  <span>{percentage}% used</span>
+                  <span className="mono">{formatPHP(currentBudget)}</span>
+                </div>
               </div>
-              <p
-                className={`text-base sm:text-lg font-semibold mono ${
-                  isOver ? "text-red-400" : "text-brand-light"
-                }`}
-              >
-                {formatPHP(remaining)}
-              </p>
-            </div>
-          </div>
 
-          {/* Set Budget button */}
-          <Button
-            variant="ghost"
-            onClick={() => setIsBudgetModalOpen(true)}
-            className="w-full text-surface-muted hover:text-white hover:bg-surface border border-surface-border"
-          >
-            <Settings className="h-4 w-4 mr-2" />
-            Set Budget
-          </Button>
+              {/* Budget + Remaining row */}
+              <div className="grid grid-cols-2 gap-2 sm:gap-4">
+                <div className="rounded-lg bg-surface p-2.5 sm:p-3 border border-surface-border">
+                  <p className="text-[10px] sm:text-xs text-surface-muted mb-1">
+                    Monthly Budget
+                  </p>
+                  <p className="text-base sm:text-lg font-semibold text-white mono">
+                    {formatPHP(currentBudget)}
+                  </p>
+                </div>
+                <div className="rounded-lg bg-surface p-2.5 sm:p-3 border border-surface-border">
+                  <div className="flex items-center gap-1 mb-1">
+                    <p className="text-[10px] sm:text-xs text-surface-muted">
+                      Remaining
+                    </p>
+                    {isOver ? (
+                      <TrendingDown className="h-3 w-3 text-red-400" />
+                    ) : (
+                      <TrendingUp className="h-3 w-3 text-brand" />
+                    )}
+                  </div>
+                  <p
+                    className={`text-base sm:text-lg font-semibold mono ${
+                      isOver ? "text-red-400" : "text-brand-light"
+                    }`}
+                  >
+                    {formatPHP(remaining)}
+                  </p>
+                </div>
+              </div>
+
+              {/* Set Budget button */}
+              <Button
+                variant="ghost"
+                onClick={() => setIsBudgetModalOpen(true)}
+                className="w-full text-surface-muted hover:text-white hover:bg-surface border border-surface-border"
+              >
+                <Settings className="h-4 w-4 mr-2" />
+                Set Budget
+              </Button>
+            </>
+          ) : (
+            /* No budget set — prominent prompt */
+            <div className="flex flex-col items-center gap-3 py-4">
+              <p className="text-sm text-surface-muted">
+                No budget set for this month
+              </p>
+              <Button
+                onClick={() => setIsBudgetModalOpen(true)}
+                className="bg-brand hover:bg-brand-dark text-white"
+              >
+                <Settings className="h-4 w-4 mr-2" />
+                Set Budget
+              </Button>
+            </div>
+          )}
         </CardContent>
       </Card>
 
       <BudgetSetterModal
-        currentBudget={budget.monthly}
+        currentBudget={currentBudget}
+        activeMonth={activeMonth}
         onSave={onSetBudget}
         isOpen={isBudgetModalOpen}
         onClose={() => setIsBudgetModalOpen(false)}
