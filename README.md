@@ -1,6 +1,8 @@
-# Student Expense Tracker
+# SpendWise a Student Expense Tracker
 
 A clean, mobile-friendly expense tracking app built for students. Log daily spending, set a monthly budget, and visualize where your money goes — all stored locally in your browser.
+
+
 
 ## Features
 
@@ -14,16 +16,16 @@ A clean, mobile-friendly expense tracking app built for students. Log daily spen
 
 ## Tech Stack
 
-| Tool | Purpose |
-|---|---|
-| [React 19](https://react.dev/) | UI framework |
-| [Vite](https://vite.dev/) | Build tool & dev server |
-| [Tailwind CSS](https://tailwindcss.com/) | Utility-first styling |
-| [Radix UI](https://www.radix-ui.com/) | Accessible UI primitives (Dialog, Select, Progress) |
-| [Recharts](https://recharts.org/) | Category pie chart |
-| [Lucide React](https://lucide.dev/) | Icons |
-| [date-fns](https://date-fns.org/) | Date formatting & filtering |
-| [uuid](https://github.com/uuidjs/uuid) | Unique expense IDs |
+| Tool                                     | Purpose                                             |
+| ---------------------------------------- | --------------------------------------------------- |
+| [React 19](https://react.dev/)           | UI framework                                        |
+| [Vite](https://vite.dev/)                | Build tool & dev server                             |
+| [Tailwind CSS](https://tailwindcss.com/) | Utility-first styling                               |
+| [Radix UI](https://www.radix-ui.com/)    | Accessible UI primitives (Dialog, Select, Progress) |
+| [Recharts](https://recharts.org/)        | Category pie chart                                  |
+| [Lucide React](https://lucide.dev/)      | Icons                                               |
+| [date-fns](https://date-fns.org/)        | Date formatting & filtering                         |
+| [uuid](https://github.com/uuidjs/uuid)   | Unique expense IDs                                  |
 
 ## Getting Started
 
